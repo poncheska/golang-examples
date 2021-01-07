@@ -10,4 +10,6 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - $(shell pwd)/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    logging:
+      driver: none

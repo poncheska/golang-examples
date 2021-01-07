@@ -1,12 +1,12 @@
+CREATE TABLE School(
+                       id serial NOT NULL PRIMARY KEY,
+                       name varchar(30) NOT NULL UNIQUE
+);
+
 CREATE TABLE Person(
     id serial NOT NULL PRIMARY KEY,
     name varchar(30) NOT NULL,
     school_id integer REFERENCES school(id)
-);
-
-CREATE TABLE School(
-    id serial NOT NULL PRIMARY KEY,
-    name varchar(30) NOT NULL UNIQUE
 );
 
 CREATE TABLE Job(
@@ -25,8 +25,8 @@ CREATE VIEW JobsNumber AS
     JOIN JobLink JL on P.id = JL.person_id
     GROUP BY (P.id, P.name)
     UNION
-    SELECT P.id, P.name, 0
+    SELECT P.id AS id, P.name AS name, 0 AS num
     FROM Person P
     WHERE P.id NOT IN (
-        SELECT id FROM JobLink
+        SELECT person_id FROM JobLink
         );
