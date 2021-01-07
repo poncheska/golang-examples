@@ -1,0 +1,4 @@
+CREATE TABLE Person{
+    id PRIMARY KEY,
+
+}
