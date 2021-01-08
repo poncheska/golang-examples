@@ -1,10 +1,8 @@
-package main
+package postgres
 
 import (
-	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"io/ioutil"
 )
 
 type Storage struct {
@@ -33,29 +31,6 @@ type JobsNumber struct {
 	Num  int64  `db:"num"`
 }
 
-func main() {
-	s, err := NewStorage("user=admin password=password sslmode=disable")
-	if err != nil {
-		panic(err)
-	}
-	b, err := ioutil.ReadFile("./test-init.sql")
-	if err != nil {
-		panic(err)
-	}
-	s.DB.MustExec(string(b))
-
-	people := s.ReadPeople()
-	jobs := s.ReadJobs()
-	schools := s.ReadSchools()
-	jobsNum := s.ReadJobsNumber()
-	fmt.Printf("%v\n%v\n%v\n%v\n", people,
-		jobs, schools, jobsNum)
-	s.DB.Exec("INSERT INTO Person(id, name, school_id) VALUES (7, 'Fedor', 2);")
-	people = s.ReadPeople()
-	jobsNum = s.ReadJobsNumber()
-	fmt.Printf("%v\n%v\n", people, jobsNum)
-}
-
 func NewStorage(connStr string) (*Storage, error) {
 	db, err := sqlx.Connect("postgres", connStr)
 	if err != nil {
@@ -66,26 +41,53 @@ func NewStorage(connStr string) (*Storage, error) {
 
 func (s *Storage) ReadPeople() []Person {
 	var people []Person
-	s.DB.Select(&people, "SELECT * FROM Person;")
+	err := s.DB.Select(&people, "SELECT * FROM Person;")
+	if err != nil {
+		panic(err)
+	}
 	return people
 }
 
 func (s *Storage) ReadSchools() []School {
 	var schools []School
-	s.DB.Select(&schools, "SELECT * FROM School;")
+	err := s.DB.Select(&schools, "SELECT * FROM School;")
+	if err != nil {
+		panic(err)
+	}
 	return schools
 }
 
 func (s *Storage) ReadJobs() []Job {
 	var jobs []Job
-	s.DB.Select(&jobs, "SELECT * FROM Job;")
+	err := s.DB.Select(&jobs, "SELECT * FROM Job;")
+	if err != nil {
+		panic(err)
+	}
 	return jobs
 }
 
 func (s *Storage) ReadJobsNumber() []JobsNumber {
 	var jobsNum []JobsNumber
-	s.DB.Select(&jobsNum, "SELECT * FROM JobsNumber;")
+	err := s.DB.Select(&jobsNum, "SELECT * FROM JobsNumber;")
+	if err != nil {
+		panic(err)
+	}
 	return jobsNum
+}
+
+func (s *Storage) GetSchName(personId int64) (string, error) {
+	type SchName struct {
+		Name string `db:"name"`
+	}
+	var sn SchName
+	err := s.DB.Get(&sn,
+		`SELECT S.name AS name FROM School S
+				JOIN Person P ON P.school_id=S.id
+				WHERE P.id=$1`, personId)
+	if err != nil{
+		return "", err
+	}
+	return sn.Name, nil
 }
 
 // This func doesn't work correct, because init.sql insert data with id

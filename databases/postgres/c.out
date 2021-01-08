@@ -1,0 +1,19 @@
+mode: set
+golang-examples/databases/postgres/postgres.go:34.51,36.16 2 1
+golang-examples/databases/postgres/postgres.go:39.2,39.26 1 1
+golang-examples/databases/postgres/postgres.go:36.16,38.3 1 0
+golang-examples/databases/postgres/postgres.go:42.41,45.16 3 1
+golang-examples/databases/postgres/postgres.go:48.2,48.15 1 1
+golang-examples/databases/postgres/postgres.go:45.16,46.13 1 0
+golang-examples/databases/postgres/postgres.go:51.42,54.16 3 1
+golang-examples/databases/postgres/postgres.go:57.2,57.16 1 1
+golang-examples/databases/postgres/postgres.go:54.16,55.13 1 0
+golang-examples/databases/postgres/postgres.go:60.36,63.16 3 1
+golang-examples/databases/postgres/postgres.go:66.2,66.13 1 1
+golang-examples/databases/postgres/postgres.go:63.16,64.13 1 0
+golang-examples/databases/postgres/postgres.go:69.49,72.16 3 1
+golang-examples/databases/postgres/postgres.go:75.2,75.16 1 1
+golang-examples/databases/postgres/postgres.go:72.16,73.13 1 0
+golang-examples/databases/postgres/postgres.go:78.62,87.15 4 1
+golang-examples/databases/postgres/postgres.go:90.2,90.21 1 1
+golang-examples/databases/postgres/postgres.go:87.15,89.3 1 1
